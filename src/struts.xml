@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <package name="hellopackage" extends="struts-default">
+    	<interceptors>
+			<interceptor name="logging" class="com.h2k.interceptors.LoggingInterceptor" />
+	
+	        <interceptor-stack name="myBusinessInterceptors">
+	        	<interceptor-ref name="defaultStack"/>
+	        	<interceptor-ref name="timer" />
+	        	<interceptor-ref name="logging" />
+	        </interceptor-stack>
+        </interceptors>
+        
+        <action name="index">
+            <result>/index.jsp</result>
+        </action>
+        
+        <action name="hello" class="com.h2k.action.HelloAction" method="execute">
+        	<interceptor-ref name="myBusinessInterceptors" />
+        	<exception-mapping result="error" exception="java.lang.Exception" />
+        	<result name="success">/index.jsp</result>
+        	<result name="error">/error.jsp</result>
+        </action>
+        
+        <action name="login" class="com.h2k.action.LoginAction" method="execute">
+        	<interceptor-ref name="myBusinessInterceptors" />
+           	<result name="input">/login.jsp</result>
+        	<result name="success">/index.jsp</result>
+        	<result name="error">/error.jsp</result>
+        </action>
+        
+    </package>
+
+</struts>
